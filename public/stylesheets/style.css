@@ -10,3 +10,12 @@ section > div		{ padding: 20px; }
 header, nav, section { background: #eee; text-align: center; }
 footer				 { background: #eee; text-align: center; }
 nav span			 { margin: 0px 10px 0px 0px; }
+ul li 				 {
+    padding: 5px 10px 5px 20px;
+    display: inline-flex; 
+    list-style: outside none none;
+    font-size: 14px;
+    color: #717171;
+    background: #F3F3F3 url("/images/ico_neutro.png") no-repeat scroll 5px 9px;
+}
+img 				 { padding: 5px ;}
