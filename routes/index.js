@@ -8,6 +8,11 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Quiz' });
 });
 
+/* GET /author. */
+router.get('/author', function(req, res) {
+  res.render('author', { autor: 'Diego J. Fernández Raposo' });
+});
+
 /* controlador de las preguntas */
 router.get('/quizes/question', quizController.question);
 
