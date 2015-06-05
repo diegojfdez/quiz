@@ -8,6 +8,9 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Quiz' });
 });
 
+// Autoload (precarga) de comandos con :quizId
+router.param('quizId', quizController.load);
+
 /* GET /author. */
 router.get('/author', function(req, res) {
   res.render('author', { autor: 'Diego J. Fernández Raposo' });
