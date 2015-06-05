@@ -13,10 +13,14 @@ router.get('/author', function(req, res) {
   res.render('author', { autor: 'Diego J. Fernández Raposo' });
 });
 
-/* controlador de las preguntas */
-router.get('/quizes/question', quizController.question);
+
+// Get quizes
+router.get('/quizes', quizController.index);
+
+// Get single quiz
+router.get('/quizes/:quizId(\\d+)', quizController.show);
 
 /* controlador de las respuestas */
-router.get('/quizes/answer', quizController.answer);
+router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);
 
 module.exports = router;
