@@ -26,6 +26,31 @@ exports.show = function(req, res) {
     res.render('quizes/show', { quiz: req.quiz, errors: [] });
 };
 
+// GET /quizes/:id/edit
+exports.edit = function(req, res) {
+    var quiz = req.quiz;  // autoload de instancia de quiz
+    res.render('quizes/edit', { quiz: quiz, errors: [] });
+};
+
+// PUT /quizes/:id
+exports.update = function(req, res) {
+    req.quiz.pregunta = req.body.quiz.pregunta;
+    req.quiz.respuesta = req.body.quiz.respuesta;
+    
+    req.quiz.validate().then(function(err){
+      if(!err)    // Si no hay errores, a la BD
+        req.quiz.save(
+            { fields: [ "pregunta", "respuesta" ] }
+          )
+        .then( function() { res.redirect('/quizes'); } );
+      else        // Si hay errores
+        res.render('quizes/edit', { quiz: req.quiz, errors: err.errors });
+
+
+    });
+};
+
+
 // GET /quizes/:id/answer
 exports.answer = function(req, res) {
 	var resultado = 'Incorrecto';
