@@ -32,6 +32,9 @@ router.put('/quizes/:quizId(\\d+)', quizController.update);
 /* controlador de las respuestas */
 router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);
 
+// DELETE single quiz 
+router.delete('/quizes/:quizId(\\d+)', quizController.destroy);
+
 /* controlador del formulario de creación de preguntas */
 router.get('/quizes/new', quizController.new);
 
