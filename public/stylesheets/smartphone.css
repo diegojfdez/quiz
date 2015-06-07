@@ -4,3 +4,13 @@ body 				{ background: #333; font-size: xx-large; }
 
 h2 span, section h3	{ display: none; }
 footer, input		{ font-size: large; }
+input[type=text]
+{
+    background-color: #BFBDBD;
+    border:solid 1px #BFBDBD;
+    color: #979797;
+    height: 28px;
+    padding-left:10px;
+    width: 191px;
+    box-shadow: 2px 2px 0 #828181 inset;
+}
