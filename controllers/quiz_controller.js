@@ -5,7 +5,7 @@ exports.index = function(req, res) {
   var search = '%' + (req.query.search||'').replace(/\s+/g,'%') +'%';
   console.log(search);
   models.Quiz.findAll({where: ["pregunta like ?", search]}).then(function(quizes) {
-    res.render('quizes/index.ejs', { quizes: quizes });
+    res.render('quizes/index.ejs', { quizes: quizes, errors: [] });
   }).catch(function(error) { next(error); });
 };
 
@@ -23,7 +23,7 @@ exports.load = function(req, res, next, quizId) {
 
 // GET /quizes/:id
 exports.show = function(req, res) {
-    res.render('quizes/show', { quiz: req.quiz });
+    res.render('quizes/show', { quiz: req.quiz, errors: [] });
 };
 
 // GET /quizes/:id/answer
@@ -36,7 +36,9 @@ exports.answer = function(req, res) {
 
 	res.render('quizes/answer', 
 	   { respuesta: resultado,
-	     quiz: req.quiz });
+	     quiz: req.quiz,
+       errors: []
+         });
 };
 
 // GET /quizes/new
@@ -47,15 +49,21 @@ exports.new = function(req, res) {
         respuesta: "Respuesta"
       }
     );
-    res.render('quizes/new', { quiz: quiz });
+    res.render('quizes/new', { quiz: quiz, errors: [] });
 };
 
 // POST /quizes/create
 exports.create = function(req, res) {
   var quiz = models.Quiz.build( req.body.quiz );
-  
+
+    console.log(quiz);  
   // guarda en la BD los campos pregunta y respuesta
-  quiz.save({fields: ["pregunta" , "respuesta"]}).then(function(){
-    res.redirect('/quizes');
+  quiz.validate().then(function(err){   // validate() requiere subir a sequelize 2.0
+    if(!err)  // si NO hay error
+      quiz.save({fields: ["pregunta" , "respuesta"]}).then(function(){
+        res.redirect('/quizes');
+      });
+    else      // hay error de validación
+      res.render('quizes/new', { quiz: quiz, errors: err.errors });    
   });
 };
