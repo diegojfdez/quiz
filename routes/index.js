@@ -26,4 +26,10 @@ router.get('/quizes/:quizId(\\d+)', quizController.show);
 /* controlador de las respuestas */
 router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);
 
+/* controlador del formulario de creación de preguntas */
+router.get('/quizes/new', quizController.new);
+
+/* controlador la creación de una pregunta a traves del formulario anterior */
+router.post('/quizes/create', quizController.create);
+
 module.exports = router;
