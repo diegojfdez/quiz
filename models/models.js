@@ -40,12 +40,14 @@ sequelize.sync().then(function () {
   Quiz.count().then(function (count){
     if(count === 0) {
 	Quiz.create(
-          { pregunta: 'Capital de Portugal',
-            respuesta: 'Lisboa'
+          { tema: 		"Ciencia", 
+          	pregunta: 	'Capital de Portugal',
+            respuesta: 	'Lisboa'
           }
         );
 	Quiz.create(
-	  { pregunta: 'Capital de Italia',
+	  { tema: 	  "Ciencia", 
+	  	pregunta: 'Capital de Italia',
 	    respuesta: 'Roma'
 	  }
 	).then(function(){console.log('BD inicializada.');});

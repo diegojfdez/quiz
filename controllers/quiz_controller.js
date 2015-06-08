@@ -34,13 +34,14 @@ exports.edit = function(req, res) {
 
 // PUT /quizes/:id
 exports.update = function(req, res) {
+    req.quiz.tema = req.body.quiz.tema;
     req.quiz.pregunta = req.body.quiz.pregunta;
     req.quiz.respuesta = req.body.quiz.respuesta;
     
     req.quiz.validate().then(function(err){
       if(!err)    // Si no hay errores, a la BD
         req.quiz.save(
-            { fields: [ "pregunta", "respuesta" ] }
+            { fields: [ "tema", "pregunta", "respuesta" ] }
           )
         .then( function() { res.redirect('/quizes'); } );
       else        // Si hay errores
@@ -79,6 +80,7 @@ exports.answer = function(req, res) {
 exports.new = function(req, res) {
   var quiz = models.Quiz.build( // f() q crea un nuevo objeto Quiz asociado a la tabla Quiz
       {
+        tema: "otro", 
         pregunta: "Pregunta", 
         respuesta: "Respuesta"
       }
@@ -94,7 +96,7 @@ exports.create = function(req, res) {
   // guarda en la BD los campos pregunta y respuesta
   quiz.validate().then(function(err){   // validate() requiere subir a sequelize 2.0
     if(!err)  // si NO hay error
-      quiz.save({fields: ["pregunta" , "respuesta"]}).then(function(){
+      quiz.save({fields: ["tema", "pregunta" , "respuesta"]}).then(function(){
         res.redirect('/quizes');
       });
     else      // hay error de validación
