@@ -44,13 +44,13 @@ sequelize.sync().then(function () {
           	pregunta: 	'Capital de Portugal',
             respuesta: 	'Lisboa'
           }
-        );
+        ).then(function(){console.log('BD inicializada 1.');});
 	Quiz.create(
 	  { tema: 	  "Ciencia", 
 	  	pregunta: 'Capital de Italia',
 	    respuesta: 'Roma'
 	  }
-	).then(function(){console.log('BD inicializada.');});
+	).then(function(){console.log('BD inicializada 2.');});
     };
   });
 });
