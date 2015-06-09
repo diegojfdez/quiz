@@ -1,5 +1,22 @@
 var models = require('../models/models.js');
 
+// Autoload - comprueba si la ruta incluye un :quizIdalido
+exports.load = function(req, res, next, commentId) {
+  models.Comment.find(
+      {
+        where:    { 
+                    id: Number(commentId)
+                  }
+      }
+    ).then(function(comment) {
+      if (comment) {
+        req.comment = comment;
+        next();
+      } else { next(new Error('No existe commentId=' + commentId)); }
+    }
+  ).catch(function(error) { next(error); });
+};
+
 // GET /quizes/:id/comments/new
 exports.new = function(req, res) {
 	res.render('comments/new.ejs', 
@@ -26,4 +43,16 @@ exports.create = function(req, res) {
       res.render('comments/new.ejs', { comment: comment, errors: err.errors });    
   });
 
+};
+
+// GET /quizes/:id/comments/:commId/publish
+exports.publish = function(req, res) {
+  req.comment.publicado = true;
+   
+  // guarda el cambio en la BD
+  req.comment.save( { fields: ["publicado"] } )
+    .then(function(){
+          res.redirect('/quizes/' + req.params.quizId);
+        })
+    .catch(function(error) { next(error); });
 };

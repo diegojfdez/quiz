@@ -7,6 +7,10 @@ module.exports = function(sequelize, DataTypes) {
 		  texto: {						// campo 0
 				    type: DataTypes.STRING,		
 				    validate:  { notEmpty: {msg: "-> Falta Comentario"}}
+		  		 },
+		  publicado: {						// campo 0
+				    type: DataTypes.BOOLEAN,		
+				    defaultValue: false
 		  		 }
 		});
 }
