@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var partials = require('express-partials');
 var methodOverride = require('method-override');
+var session = require('express-session');
 
 var routes = require('./routes/index');
 //var users = require('./routes/users');
@@ -23,9 +24,21 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded()); // Quitando urlencoded({ extended: false }) permitimos notación pseudo JSON para nombre de parámetros de formularios como quiz[pregunta]
-app.use(cookieParser());
+app.use(cookieParser('DJFR Quiz 2015'));
+app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Helpers dinamicos:
+app.use(function(req, res, next) {
+  // guardar path en session.redir para volver a la pagina anterior al login
+  if (!req.path.match(/\/login|\/logout/))
+    req.session.redir = req.path;
+
+  // Hacer visible req.session en las vistas
+  res.locals.session = req.session;
+  next();
+});
 
 app.use('/', routes);
 //app.use('/users', users);
