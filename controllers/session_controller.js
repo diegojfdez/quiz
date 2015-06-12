@@ -6,6 +6,19 @@ exports.loginRequired = function(req, res, next) {
       res.redirect('/login');
 };
 
+// MW de autodesconexion de sesión
+exports.autoLogout = function(req, res, next) {
+  if(req.session.user){
+    if(Date.now() - req.session.user.tiempo > 120000) // si han pasado más de 2 minutos (120000ms) desconectamos
+      res.redirect('/logout');
+    else{
+      req.session.tiempo = Date.now();
+      next();
+    }
+  } else
+    next();
+};
+
 
 
 // GET /login  -- Formulario de login
@@ -32,7 +45,8 @@ exports.create = function(req, res) {
       // Si existe re.session.user hay session!
       req.session.user = {
         id:       user.id,
-        username: user.username
+        username: user.username,
+        tiempo:     Date.now(), 
       }
       res.redirect(req.session.redir.toString()); // volvemos a la página previa al login
   });  

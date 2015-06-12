@@ -15,46 +15,46 @@ router.param('quizId', quizController.load);
 router.param('commentId', commentController.load);
 
 // Rutas de sesion
-router.get('/login', sessionController.new);
-router.post('/login', sessionController.create);
+router.get('/login', sessionController.autoLogout, sessionController.new);
+router.post('/login', sessionController.autoLogout, sessionController.create);
 router.get('/logout', sessionController.destroy);
 
 /* GET /author. */
-router.get('/author', function(req, res) {
+router.get('/author', sessionController.autoLogout, function(req, res) {
   res.render('author', { autor: 'Diego J. Fernández Raposo', errors: [] });
 });
 
 
 // Get quizes
-router.get('/quizes', quizController.index);
+router.get('/quizes', sessionController.autoLogout, quizController.index);
 
 // Get single quiz
-router.get('/quizes/:quizId(\\d+)', quizController.show);
+router.get('/quizes/:quizId(\\d+)', sessionController.autoLogout, quizController.show);
 
 /* controlador de las respuestas */
-router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);
+router.get('/quizes/:quizId(\\d+)/answer', sessionController.autoLogout, quizController.answer);
 
 
 /* controlador de los comentarios */
-router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
-router.post('/quizes/:quizId(\\d+)/comments', commentController.create);
+router.get('/quizes/:quizId(\\d+)/comments/new', sessionController.autoLogout, commentController.new);
+router.post('/quizes/:quizId(\\d+)/comments', sessionController.autoLogout, commentController.create);
 router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', 
-	sessionController.loginRequired, commentController.publish); // debe ser PUT
+	sessionController.autoLogout, sessionController.loginRequired, commentController.publish); // debe ser PUT
 
 
 // Get single quiz editing form
-router.get('/quizes/:quizId(\\d+)/edit', sessionController.loginRequired, quizController.edit);
+router.get('/quizes/:quizId(\\d+)/edit', sessionController.autoLogout, sessionController.loginRequired, quizController.edit);
 
 // PUT single quiz editing
-router.put('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.update);
+router.put('/quizes/:quizId(\\d+)', sessionController.autoLogout, sessionController.loginRequired, quizController.update);
 
 // DELETE single quiz 
-router.delete('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.destroy);
+router.delete('/quizes/:quizId(\\d+)', sessionController.autoLogout, sessionController.loginRequired, quizController.destroy);
 
 /* controlador del formulario de creación de preguntas */
-router.get('/quizes/new', sessionController.loginRequired, quizController.new);
+router.get('/quizes/new', sessionController.autoLogout, sessionController.loginRequired, quizController.new);
 
 /* controlador la creación de una pregunta a traves del formulario anterior */
-router.post('/quizes/create', sessionController.loginRequired, quizController.create);
+router.post('/quizes/create', sessionController.autoLogout, sessionController.loginRequired, quizController.create);
 
 module.exports = router;
